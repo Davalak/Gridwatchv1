@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GridWatch Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <h1>GridWatch Dashboard</h1>
+
+  <h2>Latest Device Readings</h2>
+  <table id="readingsTable">
+    <thead>
+      <tr>
+        <th>Device</th>
+        <th>Timestamp</th>
+        <th>Voltage (V)</th>
+        <th>Current (A)</th>
+        <th>Power (W)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Active Outages</h2>
+  <table id="outagesTable">
+    <thead>
+      <tr>
+        <th>Device</th>
+        <th>Start Time</th>
+        <th>Reason</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function loadReadings() {
+      const res = await fetch('api/readings.php');
+      const data = await res.json();
+      const tbody = document.querySelector('#readingsTable tbody');
+      tbody.innerHTML = '';
+      data.forEach(r => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${r.device_name}</td>
+            <td>${r.timestamp}</td>
+            <td>${r.voltage}</td>
+            <td>${r.current}</td>
+            <td>${r.power}</td>
+          </tr>`;
+      });
+    }
+
+    async function loadOutages() {
+      const res = await fetch('api/outages.php');
+      const data = await res.json();
+      const tbody = document.querySelector('#outagesTable tbody');
+      tbody.innerHTML = '';
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3">No active outages</td></tr>';
+      } else {
+        data.forEach(o => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${o.device_name}</td>
+              <td>${o.start_time}</td>
+              <td>${o.reason}</td>
+            </tr>`;
+        });
+      }
+    }
+
+    loadReadings();
+    loadOutages();
+    // Auto-refresh every 30 seconds
+    setInterval(() => { loadReadings(); loadOutages(); }, 30000);
+  </script>
+</body>
+</html>
