@@ -4,14 +4,14 @@ function Outages() {
     const [Outages, setOutages] = useState([]);
 
     useEffect(() => {
-        fetch("api/outages.php")
+        fetch("/outages.php")
             .then(res => res.json())
             .then(data => setOutages(data));
     }, []);
 
     return (
-        <div>
-            <h2> Outages</h2>
+        <div className= "page">
+            <h2 className="pageTitle"> Outages</h2>
             <ul>
                 {Outages.map(o => (
                 <li key={o.id}>

@@ -4,14 +4,14 @@ function Dashboard() {
     const [readings, setReadings] = useState([]);
 
     useEffect(() => {
-        fetch("/api/readings")
+        fetch("/readings.php")
             .then((res) => res.json())
             .then((data) => setReadings(data));
     }, []);
 
     return (
-        <div>
-            <h2>Dashboard</h2>
+        <div className= "page">
+            <h2 className = "pageTitle">Dashboard</h2>
             <ul>
                 {readings.map((r) => (
                     <li key={r.id}>

@@ -1,6 +1,8 @@
 <?php
-require '.../db.php';
 header('Content-Type: application/json');
+
+try {
+    require __DIR__ . '/../db.php';
 
 $sql = "
 SELECT o.device_id, d.device_name, o.start_time, o.reason
@@ -10,6 +12,12 @@ WHERE o.end_time IS NULL OR o.end_time > NOW()
 ";
 
 $stmt = $pdo->query($sql);
-$results = $stmt->fetchALL(PDO::FETCH_ASSOC);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 echo json_encode($results);
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Internal Server Error']);
+}
+?>

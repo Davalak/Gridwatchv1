@@ -1,5 +1,8 @@
 <?php
-require 'db.php';
+
+try {
+
+require __DIR__ . '/db.php';
 
 $sql = "
 SELECT r.device_id, d.device_name, r.timestamp, r.voltage, r.current, r.power
@@ -15,3 +18,9 @@ JOIN (
 $stmt = $pdo->query($sql);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 print_r($results);
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Internal Server Error']);
+}
+?>

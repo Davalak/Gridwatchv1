@@ -1,6 +1,8 @@
 <?php
-require '.../db.php';
 header('Content-Type: application/json');
+
+try {
+    require __DIR__ . '/../db.php';
 
 $sql = "
 SELECT r.device_id, d.device_name, r.timestamp, r.voltage, r.current, r.power
@@ -18,3 +20,9 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 echo json_encode($results);
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Internal Server Error']);
+}
+?>

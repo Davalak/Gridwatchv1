@@ -4,14 +4,14 @@ function Devices() {
     const [devices, setDevices] = useState([]);
 
     useEffect(() => {
-        fetch("api/devices.php")
+        fetch("/devices.php")
             .then(res => res.json())
             .then(data => setDevices(data));
     }, []);
     
     return (
-        <div>
-            <h2> Devices</h2>
+        <div className= "page">
+            <h2 className = "pageTitle"> Devices</h2>
             <ul>
                 {devices.map(d => (
                     <li key={d.id}>
