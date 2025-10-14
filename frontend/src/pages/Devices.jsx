@@ -15,7 +15,7 @@ function Devices() {
             <ul>
                 {devices.map(d => (
                     <li key={d.id}>
-                        {d.device_name}{d.location}
+                        {d.device_name} {d.location}
                     </li>
                 ))}
             </ul>

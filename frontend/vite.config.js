@@ -6,8 +6,8 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      "/api": "http://localhost:8080",  // Spring Boot
-      "/php": "http://localhost:8000",  // PHP server
+      '^/.*\\.php$': 'http://localhost:8000', // PHP backend
+      '/api': 'http://localhost:8080', // Spring Boot backend
     },
   },
 });
